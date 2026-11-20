@@ -1,0 +1,30 @@
+import secrets
+import string
+
+def generate_password(length=16, use_symbols=True):
+    """Генерирует криптографически стойкий пароль."""
+    alphabet = string.ascii_letters + string.digits
+    if use_symbols:
+        alphabet += "!@#$%^&*()-_=+"
+    
+    # Гарантируем хотя бы по одному символу каждого типа
+    password = [
+        secrets.choice(string.ascii_lowercase),
+        secrets.choice(string.ascii_uppercase),
+        secrets.choice(string.digits),
+    ]
+    if use_symbols:
+        password.append(secrets.choice("!@#$%^&*()-_=+"))
+    
+    # Добиваем до нужной длины
+    while len(password) < length:
+        password.append(secrets.choice(alphabet))
+    
+    # Перемешиваем
+    secrets.SystemRandom().shuffle(password)
+    return "".join(password)
+
+
+if __name__ == "__main__":
+    for i in range(5):
+        print(generate_password())
